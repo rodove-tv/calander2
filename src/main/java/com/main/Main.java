@@ -1,10 +1,10 @@
 package com.main;
 
-import com.Calendar.User.User;
+import com.calendar.user.User;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-import com.Calendar.DataManadgement.DataManadgement;
+import com.calendar.DataManadgement.DataManadgement;
 public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in); // Déplacer l'initialisation ici
