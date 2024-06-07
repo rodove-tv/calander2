@@ -1,5 +1,5 @@
 package com.calendar.DataManadgement;
-import com.calendar.user.User;
+import com.calendar.User.User;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

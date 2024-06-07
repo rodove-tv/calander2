@@ -1,6 +1,6 @@
 package com.main;
 
-import com.calendar.user.User;
+import com.calendar.User.User;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -19,9 +19,14 @@ public class Main {
         User user1 = User.createUser(scanner, users);
         users.add(user1);
         User user2 = User.createUser(scanner, users);
+        user2.createFamily(scanner);
+        user2.createFamily(scanner);
+        user2.deleteFamily(scanner);
         users.add(user2);
+
 
         // Enregistrer les utilisateurs dans le fichier JSON
         DataManadgement.writeUsersToFile(jsonFilePath, users);
+        scanner.close();
     }
 }

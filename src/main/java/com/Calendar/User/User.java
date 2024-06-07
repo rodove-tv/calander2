@@ -1,5 +1,6 @@
-package com.calendar.user;
+package com.calendar.User;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,9 +32,36 @@ public class User {
         }while (!mdp.equals(mdp_confirmed));{
             System.out.println("Passwords do not match. Please try again.");
         }
-        List<String> family = List.of();
-        User user = new User(1,name,pseudo,family,mdp);
-        return user;
+        List<String> family = new ArrayList<>();
+        return new User(1,name,pseudo,family,mdp);
+    }
+    public void createFamily(Scanner scanner) throws IOException {
+        String nameFamily;
+        do {
+            System.out.print("Enter a name of family : ");
+            nameFamily = scanner.nextLine();
+            nameFamily = UserPseudo+nameFamily;
+            if (family.contains(nameFamily)) {
+                System.out.println("Name family existe déja voilà toute les famille que vous posédait : ");
+                printFamily();
+            }
+        }while(family.contains(nameFamily));
+        family.add(nameFamily);
+    }
+    public void deleteFamily(Scanner scanner) throws IOException {
+        String familyDel;
+        int familyDelInt;
+        do {
+            printFamily();
+            System.out.print("Enter a number of family to delete: ");
+            familyDel = scanner.nextLine();
+            familyDelInt = Integer.parseInt(familyDel);
+            if (familyDelInt >= family.size() || familyDelInt < 0) {
+                System.out.println("Family does not exist. Please try again.");
+            }
+        } while (familyDelInt >= family.size() || familyDelInt < 0);
+
+        family.remove(familyDelInt);
     }
     public void addFamily(Scanner scanner,List<User> tab_user) throws IOException {
         System.out.print("gives the pseudo of the user to add to the family");
@@ -85,9 +113,7 @@ public class User {
         System.out.println("UserPseudo: " + UserPseudo);
         if (family.get(0) !=""){
             System.out.println("Family: ");
-            for (int i = 0; i < family.size(); i++) {
-                System.out.println(family.get(i));
-            }
+            printFamily();
         }else {
             System.out.println("No family");
         }
@@ -99,6 +125,11 @@ public class User {
     }
     public String getName() {
         return name;
+    }
+    private void printFamily(){
+        for (int i = 0; i < family.size(); i++) {
+            System.out.println(i + ". " + family.get(i));
+        }
     }
     public List<String> getFamily() {
         return family;
