@@ -1,4 +1,4 @@
-package com.calendar.display;
+package com.Calendar.display;
 import com.calendar.events.Events;
 import  com.calendar.users.User;
 

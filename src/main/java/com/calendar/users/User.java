@@ -1,4 +1,4 @@
-package com.calendar.users;
+package com.Calendar.users;
 
 public class User {
 

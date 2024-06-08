@@ -1,4 +1,4 @@
-package com.calendar.events;
+package com.Calendar.events;
 import com.calendar.users.User;
 
 import java.sql.ClientInfoStatus;

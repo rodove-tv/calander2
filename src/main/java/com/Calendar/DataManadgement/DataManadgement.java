@@ -1,4 +1,4 @@
-package com.calendar.DataManadgement;
+package com.Calendar.DataManadgement;
 import com.calendar.User.User;
 import com.calendar.events.Events;
 import com.fasterxml.jackson.core.ObjectCodec;
