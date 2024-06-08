@@ -1,6 +1,7 @@
 .idea
 .vscode
 .DS_Store
+.MF
 target
 out
 *.iml
