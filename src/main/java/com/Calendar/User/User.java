@@ -1,5 +1,8 @@
 package com.Calendar.User;
+import com.Calendar.display.Display;
+
 import java.io.IOException;
+import java.security.interfaces.DSAKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +19,9 @@ public class User {
     public List<String> getFamily() {return family;}
     public String getPseudo() {return UserPseudo;}
     private String getMdp() {return mdp;}
+    private User getUser() {return this;}
+
+    private String setPseudo(String pseudo) {return UserPseudo = pseudo;}
 
     private void printFamily(){
         for (int i = 0; i < family.size(); i++) {
@@ -57,11 +63,12 @@ public class User {
         do{
             System.out.print("Enter your password: ");
             mdp = scanner.nextLine();
-            System.out.print("confirmed your password: ");
+            System.out.print("Confirm your password: ");
             mdp_confirmed = scanner.nextLine();
-        }while (!mdp.equals(mdp_confirmed));{
-            System.out.println("Passwords do not match. Please try again.");
-        }
+            if (!mdp.equals(mdp_confirmed)) {
+                System.out.println("Passwords do not match. Please try again.");
+            }
+        } while (!mdp.equals(mdp_confirmed));
         List<String> family = new ArrayList<>();
         return new User(1,name,pseudo,family,mdp);
     }
@@ -140,6 +147,20 @@ public class User {
         this.UserPseudo = UserPseudo;
         this.family = family;
         this.mdp = mdp;
+    }
+
+    public void changePseudo() {
+        System.out.println("Enter your new pseudo: ");
+        String pseudo = Display.getConsoleInputString();
+        System.out.println("Your pseudo will be" + pseudo + "Are you sure? 1:yes 2:no");
+        int choice = Display.getConsoleInputInt(2);
+        if (choice == 1) {
+            setPseudo(pseudo);
+            System.out.println("Your pseudo has been changed to " + pseudo);
+            Display.receptionDisplay(this);
+        } else {
+            changePseudo();
+        }
     }
 
 }

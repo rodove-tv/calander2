@@ -1,14 +1,13 @@
 package com.Calendar.events;
-import com.Calendar.users.User;
+import com.Calendar.User.User;
 import com.Calendar.display.Display;
-import jdk.jfr.Event;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class Events {
+
 
     private String eventName;
     private String eventOwner;
@@ -18,12 +17,13 @@ public abstract class Events {
     private int hourOfDay;
     private int minuteOfDay;
     private LocalDateTime date;
-    private LocalDate localDate;
+    private final LocalDate localDate = LocalDate.now();
     private String location;
     private String description;
-    private static List<List<Events>> AllEventsList;
-    private com.Calendar.users.User User;
+    private static final Map<String, List<Events>> AllEventsList = new HashMap<>();
+    private com.Calendar.User.User User;
     private String Type;
+
 
 //constructor
     public Events(String eventName, String eventOwner, int year, int month, int day, int hourOfDay, int minuteOfDay, LocalDateTime date, String location, String description, User user) {
@@ -37,7 +37,6 @@ public abstract class Events {
         this.date = date;
         this.location = location;
         this.description = description;
-        this.User = user;
     }
     public Events() {
     }
@@ -46,15 +45,14 @@ public abstract class Events {
 
 
 
-    public static void addUserEventsListToAllEventsList(List<Events> eventsList) {
-        AllEventsList.add(eventsList);
+    public static void addUserEventsListToAllEventsList(List<Events> eventsList, User user) {
+        AllEventsList.put(user.getName(), eventsList);
     }
 
     public static void addEventToUserEventsList(Events event, User user) {
-        for (List<Events> events : AllEventsList) {
-            if (Objects.equals(events.getFirst().getEventOwner(), user.getName())) {
-                events.add(event);
-            }
+        List<Events> userEvents = AllEventsList.get(user.getName());
+        if (userEvents != null) {
+            userEvents.add(event);
         }
     }
 
@@ -83,9 +81,7 @@ public abstract class Events {
         this.date = LocalDateTime.of(getYear(), getMonth(), getDay(), getHourOfDay(), getMinuteOfDay());
     }
 
-    public void setLocalDate() {
-        this.localDate = LocalDate.now();
-    }
+
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
@@ -145,6 +141,9 @@ public abstract class Events {
     }
 
     public String getLocation() {
+        if (location == null) {
+            return "No location";
+        }
         return location;
     }
 
@@ -158,12 +157,7 @@ public abstract class Events {
 
     //Get all events of a user
     public static List<Events> getUserEvents(User user) {
-        for (List<Events> events : AllEventsList) {
-            if (Objects.equals(events.getFirst().getEventOwner(), user.getName())) {
-                return events;
-            }
-        }
-        return null;
+        return AllEventsList.get(user.getName());
     }
 
     //get the user event by name
@@ -181,28 +175,30 @@ public abstract class Events {
 
 //create an event
 public void createEvent(User user) {
+
     setType(getType());
-    basicEventInfos();
+    basicEventInfos(user);
     addEventToUserEventsList(this, user);
+    Display.receptionDisplay(user);
 }
 
 
 
 
-    public void basicEventInfos()  {
+    public void basicEventInfos(User user)  {
         String type = getType();
-        setEventOwner(User.getName());
+        setEventOwner(user.getName());
         System.out.println("<------------------New Event : " + type + "------------------>");
         System.out.println("Enter the name of the "+ type +": ");
         setEventName(Display.getConsoleInputString());
         System.out.println("(Optional) Enter the description of the "+ type +": ");
         setDescription(Display.getConsoleInputString());
         System.out.println("Enter the year of the "+ type + ": ");
-        setYear(Integer.parseInt(Display.getConsoleInputString()));
+        setYear(Display.getConsoleInputInt(99999));
         System.out.println("Enter the month of the " + type +": ");
-        setMonth(Integer.parseInt(Display.getConsoleInputString()));
+        setMonth(Display.getConsoleInputInt(12));
         System.out.println("Enter the day of the "+ type+ ": ");
-        setDay(Integer.parseInt(Display.getConsoleInputString()));
+        setDay(Display.getConsoleInputInt(31));
         addDetailsToEvent();
         setDate();
     }

@@ -1,7 +1,6 @@
 package com.Calendar.events;
 
 import com.Calendar.display.Display;
-import com.Calendar.users.User;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
         private String birthdayPerson;
         private String gift;
 
-        public Birthday(String eventName, String eventOwner, int year, int month, int day, int hourOfDay, int minuteOfDay, LocalDateTime date, String location, String description, com.Calendar.users.User user, String birthdayPerson, String gift) {
+        public Birthday(String eventName, String eventOwner, int year, int month, int day, int hourOfDay, int minuteOfDay, LocalDateTime date, String location, String description, com.Calendar.User.User user, String birthdayPerson, String gift) {
             super(eventName, eventOwner, year, month, day, hourOfDay, minuteOfDay, date, location, description, user);
             this.birthdayPerson = birthdayPerson;
             this.gift = gift;

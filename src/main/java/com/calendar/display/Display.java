@@ -3,129 +3,133 @@ import com.Calendar.events.Birthday;
 import com.Calendar.events.Default;
 import com.Calendar.events.Events;
 import com.Calendar.events.Task;
-import  com.Calendar.users.User;
+import  com.Calendar.User.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Display {
 
 
-    public void getEventName(Events event) {
-        System.out.println("Event: " + event.getEventName());
-    }
 
-
-    public void displayEvent(Events event) {
-        System.out.println("-----------------------------------");
-        System.out.println("Event: " + event.getEventName());
+    public static void displayEvent(Events event) {
         System.out.println("Date: " + event.getDate());
+        System.out.println("Event: " + event.getEventName());
         System.out.println("Location: " + event.getLocation());
         System.out.println("Description: " + event.getDescription());
     }
 
-    public void displayUser(User user) {
+    public static void displayUser(User user) {
         System.out.println("Name: " + user.getName());
-        System.out.println("Email: " + user.getEmail());
-        System.out.println("Phone: " + user.getPhone());
+        System.out.println("UserPseudo: " + user.getPseudo());
+        System.out.println("family: " + user.getFamily());
     }
 
-    public void displayUserEvents(User user) {
-        System.out.println("Events for " + user.getName());
-        for (Events event : Objects.requireNonNull(Events.getUserEvents(user))) {
-            displayEvent(event);
+    public static void displayUserEvents(com.Calendar.User.User user) {
+        List<Events> userEvents = Events.getUserEvents(user);
+        if (userEvents != null) {
+            System.out.println("Events for " + user.getName());
+            for (Events event : userEvents) {
+                displayEvent(event);
+            }
+        } else {
+            System.out.println("No events found for " + user.getName());
         }
+        Display.receptionDisplay(user);
     }
 
-    public void displayAllEvents(User[] users) {
-        for (User user : users) {
-            displayUserEvents(user);
-        }
-    }
 
-    public void displayAllUsers(User[] users) {
-        for (User user : users) {
-            displayUser(user);
-        }
-    }
 
-    public void displayAll(User[] users) {
-        displayAllUsers(users);
-        displayAllEvents(users);
-    }
 
-    public void displayAllEvents(Events[] events) {
-        for (Events event : events) {
-            displayEvent(event);
-        }
-    }
-
-    public void receptionDisplay(User user) {
-        System.out.println("Welcome to the Calendar App");
+    public static void receptionDisplay(User user) {
+        //clearConsole();
+        System.out.println("-----------------------Calendar App Menu-----------------------");
         System.out.println("Please select an option:");
         System.out.println("1. Display all your events");
         System.out.println("2. Display current week");
         System.out.println("3. Create a new event");
+        System.out.println("4. Display user information");
         System.out.println("4. Exit");
-        int option = getConsoleInputInt(4);
+        System.out.println("--------------------------------------------------------------");
+        int option = getConsoleInputInt(5);
         switch  (option) {
             case 1:
-                displayUserEvents(User.getUser(user.getName()));
+                //clearConsole();
+                displayUserEvents(user);
                 break;
             case 2:
-                displayCurrentWeek(User.getUser(user.getName()));
+                //clearConsole();
+                displayCurrentWeek(user);
                 break;
             case 3:
-
-                System.out.println("What type of event do you want to create? 1:Birthday 2:Meeting 3:Appointment 4:Other");
+                //clearConsole();
+                System.out.println("What type of event do you want to create? 1:Default, 2:Birthday, 3:Task");
                 int eventType = getConsoleInputInt(3);
                 Events event;
                 switch (eventType) {
                     case 1:
                         event = new Default();
+                        event.setType("Default");
                         break;
                     case 2:
+
                         event = new Birthday();
+                        event.setType("Birthday");
                         break;
                     case 3:
                         event = new Task();
+                        event.setType("Task");
                         break;
                     default:
                         System.out.println("Invalid event type");
                         return;
                 }
-                event.createEvent(User.getUser(user.getName()));
+                event.createEvent(user);
                 break;
             case 4:
-                //exit (account connection)
+                displayUser(user);
+                System.out.println("Want to change your pseudo? 1:yes 2:no");
+                int choice = getConsoleInputInt(2);
+                if (choice == 1) {
+                    user.changePseudo();
+                }
+                receptionDisplay(user);
                 break;
+            case 5:
+                //clearConsole();
+                System.out.println("Goodbye " + user.getName());
+                return;
+                //exit (account connection)
             default:
                 System.out.println("Unexpected error occurred");
                 receptionDisplay(user);
         }
     }
 
-    public void displayCurrentWeek(User user) {
+    public static void displayCurrentWeek(User user) {
+        //clearConsole();
         LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
 
         for (int i = 0; i < 7; i++) {
-            LocalDate currentDate = startOfWeek.plusDays(i);
+            LocalDateTime currentDate = startOfWeek.plusDays(i).atStartOfDay();
             System.out.println("Date: " + currentDate);
+            System.out.println("-----------------------------------");
 
             List<Events> userEvents = Events.getUserEvents(user);
             if (userEvents != null) {
                 for (Events event : userEvents) {
-                    if (event.getLocalDate().equals(currentDate)) {
+                    if (event.getDate().equals(currentDate)) {
                         displayEvent(event);
+                        System.out.println("-----------------------------------");
                     }
                 }
             }
         }
+        Display.receptionDisplay(user);
     }
 
 
@@ -157,8 +161,13 @@ public class Display {
             }
             return value;
         } catch (NumberFormatException e) {
-            System.out.println(input + " is not a valid integer");
+            System.out.println(input + " Please enter a valid integer between 0 and " + NbOfOptions);
             return getConsoleInputInt(NbOfOptions);
         }
+    }
+
+
+    public static void clearConsole() {
+        System.out.print('\f');
     }
 }
