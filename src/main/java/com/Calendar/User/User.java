@@ -5,6 +5,36 @@ import java.util.List;
 import java.util.Scanner;
 
 public class User {
+    private int id;
+    private String name;
+    private String UserPseudo;
+    private List<String> family;
+    private String mdp;
+
+    public int getId() {return id;}
+    public String getName() {return name;}
+    public List<String> getFamily() {return family;}
+    public String getPseudo() {return UserPseudo;}
+    private String getMdp() {return mdp;}
+
+    private void printFamily(){
+        for (int i = 0; i < family.size(); i++) {
+            System.out.println(i + ". " + family.get(i));
+        }
+    }
+    public void printUser(){
+        System.out.println("Name: " + name);
+        System.out.println("UserPseudo: " + UserPseudo);
+        if (family.get(0) !=""){
+            System.out.println("Family: ");
+            printFamily();
+        }else {
+            System.out.println("No family");
+        }
+        System.out.println("MDP: " + mdp);
+    }
+
+
     public static User createUser(Scanner scanner,List<User> tab_user) throws IOException {
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
@@ -35,6 +65,7 @@ public class User {
         List<String> family = new ArrayList<>();
         return new User(1,name,pseudo,family,mdp);
     }
+
     public void createFamily(Scanner scanner) throws IOException {
         String nameFamily;
         do {
@@ -94,54 +125,6 @@ public class User {
 
 
     }
-    private int id;
-    private String name;
-    private String UserPseudo;
-    private List<String> family;
-    private String mdp;
-
-
-    public User(int id, String name,String UserPseudo,List<String> family, String mdp) {
-        this.id = id;
-        this.name = name;
-        this.UserPseudo = UserPseudo;
-        this.family = family;
-        this.mdp = mdp;
-    }
-    public void printUser(){
-        System.out.println("Name: " + name);
-        System.out.println("UserPseudo: " + UserPseudo);
-        if (family.get(0) !=""){
-            System.out.println("Family: ");
-            printFamily();
-        }else {
-            System.out.println("No family");
-        }
-        System.out.println("MDP: " + mdp);
-    }
-
-    public int getId() {
-        return id;
-    }
-    public String getName() {
-        return name;
-    }
-    private void printFamily(){
-        for (int i = 0; i < family.size(); i++) {
-            System.out.println(i + ". " + family.get(i));
-        }
-    }
-    public List<String> getFamily() {
-        return family;
-    }
-    public String getPseudo() {
-        return UserPseudo;
-    }
-    public String getMdp() {
-        return mdp;
-    }
-
-
     public static User getUserByPseudo(List<User> users, String pseudo) {
         for (User user : users) {
             if (user.getPseudo().equals(pseudo)) {
@@ -149,6 +132,14 @@ public class User {
             }
         }
         return null; // Si aucun utilisateur n'est trouvé avec ce pseudo
+    }
+
+    public User(int id, String name,String UserPseudo,List<String> family, String mdp) {
+        this.id = id;
+        this.name = name;
+        this.UserPseudo = UserPseudo;
+        this.family = family;
+        this.mdp = mdp;
     }
 
 }

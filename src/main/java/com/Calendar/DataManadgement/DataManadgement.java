@@ -1,5 +1,6 @@
 package com.calendar.DataManadgement;
 import com.calendar.User.User;
+import com.calendar.events.Events;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +11,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import com.main.Main;
+import jdk.jfr.Event;
+
 public class DataManadgement {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
@@ -31,6 +34,29 @@ public class DataManadgement {
     public static void writeUsersToFile(String filePath, List<User> users) {
         try {
             objectMapper.writeValue(new File(filePath), users);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static List<List<Events>> readEventsFromFile(String filePath) {
+        List<List<Events>> events = new ArrayList<>();
+        File jsonFile = new File(filePath);
+
+        if (jsonFile.exists()) {
+            try {
+                events = objectMapper.readValue(jsonFile, new TypeReference<List<List<Events>>>(){});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return events;
+    }
+    public static void writeEventsToFile(String filePath, List<List<Events>> event) {
+        try {
+            objectMapper.writeValue(new File(filePath), event);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -78,6 +78,18 @@ public abstract class Events {
 
     }
 
-
+    public Events(String eventName, String eventOwner, int year, int month, int day, int hourOfDay, int minuteOfDay, LocalDateTime date, String location, String description,User user){
+        this.eventName = eventName;
+        this.eventOwner = eventOwner;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hourOfDay = hourOfDay;
+        this.minuteOfDay = minuteOfDay;
+        this.date = date;
+        this.location = location;
+        this.description = description;
+        this.User = user;
+    }
 
 }
