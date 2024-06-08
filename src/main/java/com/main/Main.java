@@ -1,6 +1,6 @@
 package com.main;
 
-import com.calendar.User.User;
+import com.Calendar.User.User;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -29,6 +29,16 @@ public class Main {
 //        DataManadgement.writeUsersToFile(jsonFilePath, users);
 //        scanner.close();
 
+    User user = new User();
+
 
     }
+
+
+
+
+
+
+
+
 }
