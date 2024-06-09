@@ -1,54 +1,63 @@
 package com.Calendar.events;
 
+import com.Calendar.User.User;
 import com.Calendar.display.Display;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-    public class Birthday extends Events {
+import static com.Calendar.display.Display.ANSI_RESET;
+import static com.Calendar.display.Display.ANSI_WHITE;
 
-        private String birthdayPerson;
+public class Birthday extends Events {
+
         private String gift;
+        private final String Type = "Birthday";
 
-        public Birthday(String eventName, String eventOwner, int year, int month, int day, int hourOfDay, int minuteOfDay, LocalDateTime date, String location, String description, com.Calendar.User.User user, String birthdayPerson, String gift) {
-            super(eventName, eventOwner, year, month, day, hourOfDay, minuteOfDay, date, location, description, user);
-            this.birthdayPerson = birthdayPerson;
-            this.gift = gift;
-        }
+
         public Birthday() {
             super();
+            setType(Type);
         }
 
-        public void createBirthdayEvent() {
-            System.out.println("Enter the name of the birthday person: ");
-            setBirthdayPerson(Display.getConsoleInputString());
-            System.out.println("Enter the gift you want to offer: ");
-            setGift(Display.getConsoleInputString());
-        }
 
-        public void setBirthdayPerson(String birthdayPerson) {
-            this.birthdayPerson = birthdayPerson;
-        }
 
         public void setGift(String gift) {
             this.gift = gift;
-        }
-
-        public String getBirthdayPerson() {
-            return birthdayPerson;
         }
 
         public String getGift() {
             return gift;
         }
 
-        public void displayBirthdayEvent() {
-            System.out.println("Event name: " + getEventName());
-            System.out.println("Event owner: " + getEventOwner());
-            System.out.println("Event date: " + getDate());
-            System.out.println("Event location: " + getLocation());
-            System.out.println("Event description: " + getDescription());
-            System.out.println("Birthday person: " + getBirthdayPerson());
-            System.out.println("Gift: " + getGift());
+
+
+        @Override
+        public void basicEventInfos(User user) {
+            setEventOwner(user.getName());
+            System.out.println(ANSI_WHITE + "<------------------" + ANSI_RESET + "New Event : Birthday" + ANSI_WHITE + "------------------>" + ANSI_RESET);
+            System.out.println("Enter the name of the birthday person: ");
+            setEventName(Display.getConsoleInputString());
+            System.out.println("(Optional) Enter the description of the Birthday: ");
+            setDescription(Display.getConsoleInputString());
+            System.out.println("Enter the gift you want to offer: ");
+            setGift(Display.getConsoleInputString());
+            System.out.println("Enter the year of the Birthday: ");
+            setYear(Display.getConsoleInputInt(99999));
+            System.out.println("Enter the month of the Birthday : ");
+            setMonth(Display.getConsoleInputInt(12));
+            System.out.println("Enter the day of the Birthday: ");
+            setDay(Display.getConsoleInputInt(31));
+            addDetailsToEvent();
+            setDate();
+        }
+
+        //display the birthday event
+        public static void displayEvent(Birthday event) {
+            System.out.println("Event owner: " + event.getEventOwner());
+            System.out.println("Birthday person: " + event.getEventName());
+            System.out.println("Location: " + event.getLocation());
+            System.out.println("Description: " + event.getDescription());
+            System.out.println("Gift: " + event.getGift());
         }
     }
 

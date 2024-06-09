@@ -1,46 +1,48 @@
 package com.Calendar.events;
 
+import com.Calendar.User.User;
 import com.Calendar.display.Display;
+
+import static com.Calendar.display.Display.ANSI_RESET;
+import static com.Calendar.display.Display.ANSI_WHITE;
 
 public class Task extends Events{
 
-        private String taskName;
-        private String taskDescription;
+
+        private final String Type = "Task";
+
 
         public Task() {
             super();
+            setType(Type);
         }
 
-        public void setTaskName(String taskName) {
-            this.taskName = taskName;
+
+        @Override
+        public void basicEventInfos(User user){
+
+            setEventOwner(user.getName());
+            System.out.println(ANSI_WHITE +"<------------------"+ ANSI_RESET +"New Event : Task" + ANSI_WHITE +"------------------>"+ANSI_RESET);
+            System.out.println("Enter the name of the task: ");
+            setEventName(Display.getConsoleInputString());
+            System.out.println("(Optional) Enter the description of the Task: ");
+            setDescription(Display.getConsoleInputString());
+            System.out.println("Enter the year of the Task: ");
+            setYear(Display.getConsoleInputInt(99999));
+            System.out.println("Enter the month of the Task : ");
+            setMonth(Display.getConsoleInputInt(12));
+            System.out.println("Enter the day of the Task: ");
+            setDay(Display.getConsoleInputInt(31));
+            addDetailsToEvent();
+            setDate();
+
         }
 
-        public void setTaskDescription(String taskDescription) {
-            this.taskDescription = taskDescription;
-        }
 
-        public String getTaskName() {
-            return taskName;
+        //display the task event
+        public static void displayEvent(Task event) {
+        System.out.println("Task name: " + event.getEventName());
+        System.out.println("Location: " + event.getLocation());
+        System.out.println("Description: " + event.getDescription());
         }
-
-        public String getTaskDescription() {
-            return taskDescription;
-        }
-
-        public void displayTaskEvent() {
-            System.out.println("Event name: " + getEventName());
-            System.out.println("Event owner: " + getEventOwner());
-            System.out.println("Event date: " + getDate());
-            System.out.println("Event location: " + getLocation());
-            System.out.println("Event description: " + getDescription());
-            System.out.println("Task name: " + getTaskName());
-            System.out.println("Task description: " + getTaskDescription());
-        }
-
-    public void createTaskEvent() {
-        System.out.println("Enter the name of the task: ");
-        setTaskName(Display.getConsoleInputString());
-        System.out.println("Enter the description of the task: ");
-        setTaskDescription(Display.getConsoleInputString());
-    }
 }
