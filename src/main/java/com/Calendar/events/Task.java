@@ -2,6 +2,7 @@ package com.Calendar.events;
 
 import com.Calendar.User.User;
 import com.Calendar.display.Display;
+import org.jetbrains.annotations.NotNull;
 
 import static com.Calendar.display.Display.ANSI_RESET;
 import static com.Calendar.display.Display.ANSI_WHITE;
@@ -19,7 +20,7 @@ public class Task extends Events{
 
 
         @Override
-        public void basicEventInfos(User user){
+        public void basicEventInfos(@NotNull User user){
 
             setEventOwner(user.getName());
             System.out.println(ANSI_WHITE +"<------------------"+ ANSI_RESET +"New Event : Task" + ANSI_WHITE +"------------------>"+ANSI_RESET);
