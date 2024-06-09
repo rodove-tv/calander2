@@ -2,7 +2,7 @@ package com.Calendar.events;
 
 import com.Calendar.User.User;
 import com.Calendar.display.Display;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
@@ -33,7 +33,7 @@ public class Birthday extends Events {
 
 
         @Override
-        public void basicEventInfos(@NotNull User user) {
+        public void basicEventInfos(/*@NotNull*/ User user) {
             setEventOwner(user.getName());
             System.out.println(ANSI_WHITE + "<------------------" + ANSI_RESET + "New Event : Birthday" + ANSI_WHITE + "------------------>" + ANSI_RESET);
             System.out.println("Enter the name of the birthday person: ");

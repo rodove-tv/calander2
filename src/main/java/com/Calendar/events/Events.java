@@ -1,7 +1,7 @@
 package com.Calendar.events;
 import com.Calendar.User.User;
 import com.Calendar.display.Display;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -188,7 +188,7 @@ public abstract class Events {
 
 
     //create an event
-    public void createEvent(@NotNull User user) {
+    public void createEvent(/*@NotNull*/ User user) {
 
         setType(getType());
         basicEventInfos(user);
