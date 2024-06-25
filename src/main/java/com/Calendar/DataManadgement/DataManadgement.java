@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.main.Main;
 import jdk.jfr.Event;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class DataManadgement {
 
@@ -61,4 +62,26 @@ public class DataManadgement {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+       public static void hashPassword(String password, User user) {
+           BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+           String hashedPassword = passwordEncoder.encode(password);
+           user.setPassword(hashedPassword);
+       }
+
+
+       public static boolean checkPassword(String rawPassword, User user) {
+           // Later, when the user tries to log in:
+           String hashedPassword = user.getPassword(); // This should come from the user input
+           return passwordEncoder.matches(rawPassword, hashedPassword);
+       }
+
+
+
+
+
 }
