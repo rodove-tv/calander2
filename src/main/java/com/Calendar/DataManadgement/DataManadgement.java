@@ -67,18 +67,20 @@ public class DataManadgement {
 
 
 
-       public static void hashPassword(String password, User user) {
-           BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-           String hashedPassword = passwordEncoder.encode(password);
-           user.setPassword(hashedPassword);
-       }
+   public static void hashPassword(String password, User user) {
+       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+       String hashedPassword = passwordEncoder.encode(password);
+       user.setPassword(hashedPassword);
+   }
 
 
-       public static boolean checkPassword(String rawPassword, User user) {
-           // Later, when the user tries to log in:
-           String hashedPassword = user.getPassword(); // This should come from the user input
-           return passwordEncoder.matches(rawPassword, hashedPassword);
-       }
+   public static boolean checkPassword(String rawPassword, User user) {
+       // Later, when the user tries to log in:
+       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+       String hashedPassword = user.getPassword(); // This should come from the user input
+       return passwordEncoder.matches(rawPassword, hashedPassword);
+
+   }
 
 
 
