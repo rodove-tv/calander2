@@ -22,11 +22,11 @@ public class User {
     public String getName() {return name;}
     public List<String> getFamily() {return family;}
     public String getPseudo() {return userPseudo;}
-    private String getMdp() {return password;}
+    public String getPassword() {return password;}
     private User getUser() {return this;}
 
     // Setters
-    private void setPassword(String Password) {
+    public void setPassword(String Password) {
         password = Password;
     }
 

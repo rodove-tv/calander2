@@ -1,6 +1,7 @@
-package com.Calendar.DataManadgement;
-import com.Calendar.User.User;
-import com.Calendar.events.Events;
+package com.calendar.DataManadgement;
+import com.calendar.User.User;
+import com.calendar.display.Display;
+import com.calendar.events.Events;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import com.main.Main;
 import jdk.jfr.Event;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class DataManadgement {
 
@@ -61,4 +65,42 @@ public class DataManadgement {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+    public static void hashPassword(String password, User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        user.setPassword(hashedPassword);
+    }
+
+
+    public static boolean checkPassword(String rawPassword, User user) {
+        // Later, when the user tries to log in:
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = user.getPassword(); // This should come from the user input
+        return passwordEncoder.matches(rawPassword, hashedPassword);
+
+    }
+
+    public static User connectionUser(List<User> tab_user) {
+        do {
+            System.out.println("Enter your pseudo or EXIT(in upper case): ");
+            String Pseudo = Display.getConsoleInputString();
+            if (Pseudo == "EXIT"){
+                return null;
+            }
+            for (User user : tab_user) {
+                if (Objects.equals(Pseudo, user.getPseudo())) {
+                    return user;
+                }
+            }
+            System.out.println("the pseudo is incorrect please try again");
+        } while (true);
+    }
+
+
+
 }
