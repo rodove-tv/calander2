@@ -1,17 +1,18 @@
-package com.Calendar.display;
-import com.Calendar.events.Birthday;
-import com.Calendar.events.Default;
-import com.Calendar.events.Events;
-import com.Calendar.events.Task;
-import  com.Calendar.User.User;
+package com.calendar.display;
+import com.calendar.DataManadgement.DataManadgement;
+import com.calendar.events.Birthday;
+import com.calendar.events.Default;
+import com.calendar.events.Events;
+import com.calendar.events.Task;
+import  com.calendar.User.User;
+import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.annotations.NotNull;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.Calendar.events.Events.displayEvent;
+import static com.calendar.events.Events.displayEvent;
 
 
 public class Display {
@@ -29,12 +30,12 @@ public class Display {
     public static final String ANSI_WHITE = "\u001B[37m";
 
 
-
+    static List<User> users = DataManadgement.readUsersFromFile("user.json");
 
 
 
     //Display user information
-    public static void displayUser(/*@NotNull*/ User user) {
+    public static void displayUser(@NotNull User user) {
         System.out.println("Name: " + user.getName());
         System.out.println("UserPseudo: " + user.getPseudo());
         System.out.println("family: " + user.getFamily());
@@ -53,13 +54,46 @@ public class Display {
         } else {
             System.out.println("No events found for " + user.getName() + "feel free to add more events");
         }
-        Display.receptionDisplay(user);
+        receptionDisplay(user);
+    }
+
+
+    public static void connectionDisplay() {
+        System.out.println(ANSI_WHITE+"-----------------------"+ANSI_RESET + ANSI_CYAN + "Calendar App Menu"+ ANSI_RESET + ANSI_WHITE + "-----------------------"+ANSI_RESET);
+        System.out.println("Please select an option:");
+        System.out.println("1. créate a new user");
+        System.out.println("2.  connection");
+        System.out.println("3. Exit");
+        System.out.println(ANSI_WHITE+"--------------------------------------------------------------"+ANSI_RESET);
+        int option = getConsoleInputInt(3);
+        User user;
+        switch (option) {
+            case 1:
+                user = User.createUser(users);
+                users.add(user);
+                receptionDisplay(user);
+                break;
+            case 2:
+                user = DataManadgement.connectionUser(users);
+                if (user != null) {
+                    connectionDisplay();
+                    return;
+                }
+                receptionDisplay(user);
+                break;
+            case 3:
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid event type");
+                break;
+        }
     }
 
 
 
     // Display the main menu
-    public static void receptionDisplay(/*@NotNull*/ User user) {
+    public static void receptionDisplay(@NotNull User user) {
         //clearConsole();
         System.out.println(ANSI_WHITE+"-----------------------"+ANSI_RESET + ANSI_CYAN + "Calendar App Menu"+ ANSI_RESET + ANSI_WHITE + "-----------------------"+ANSI_RESET);
         System.out.println("Please select an option:");
@@ -67,9 +101,10 @@ public class Display {
         System.out.println("2. Display current week");
         System.out.println("3. Create a new event");
         System.out.println("4. Display user information");
-        System.out.println("5. Exit");
+        System.out.println("5. create a new family");
+        System.out.println("6. Exit");
         System.out.println(ANSI_WHITE+"--------------------------------------------------------------"+ANSI_RESET);
-        int option = getConsoleInputInt(5);
+        int option = getConsoleInputInt(6);
         switch  (option) {
             case 1:
                 //clearConsole();
@@ -103,7 +138,7 @@ public class Display {
                 break;
             case 4:
                 displayUser(user);
-                System.out.println("Want to change your pseudo? 1:yes 2:no");
+                System.out.println("Want to change your password? 1:yes 2:no");
                 int choice = getConsoleInputInt(2);
                 if (choice == 1) {
                     user.changePseudo();
@@ -111,6 +146,11 @@ public class Display {
                 receptionDisplay(user);
                 break;
             case 5:
+                //clearConsole();
+                user.createFamily();
+                receptionDisplay(user);
+                break;
+            case 6:
                 //clearConsole();
                 System.out.println("Goodbye " + user.getName());
                 return;
@@ -123,7 +163,7 @@ public class Display {
 
 
     // Display the current week + events matching days
-    public static void displayCurrentWeek(/*@NotNull*/ User user) {
+    public static void displayCurrentWeek(@NotNull User user) {
         //clearConsole();
         LocalDate today = LocalDate.now();
         List<Events> userEvents = Events.getUserEvents(user);

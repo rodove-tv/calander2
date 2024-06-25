@@ -1,13 +1,13 @@
-package com.Calendar.events;
+package com.calendar.events;
 
-import com.Calendar.User.User;
-import com.Calendar.display.Display;
+import com.calendar.User.User;
+import com.calendar.display.Display;
 //import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
-import static com.Calendar.display.Display.ANSI_RESET;
-import static com.Calendar.display.Display.ANSI_WHITE;
+import static com.calendar.display.Display.ANSI_RESET;
+import static com.calendar.display.Display.ANSI_WHITE;
 
 public class Birthday extends Events {
 

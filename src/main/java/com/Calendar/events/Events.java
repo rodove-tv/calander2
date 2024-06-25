@@ -1,6 +1,6 @@
-package com.Calendar.events;
-import com.Calendar.User.User;
-import com.Calendar.display.Display;
+package com.calendar.events;
+import com.calendar.User.User;
+import com.calendar.display.Display;
 //import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.Calendar.display.Display.ANSI_RESET;
-import static com.Calendar.display.Display.ANSI_WHITE;
+import static com.calendar.display.Display.ANSI_RESET;
+import static com.calendar.display.Display.ANSI_WHITE;
 
 
 public abstract class Events {
@@ -31,7 +31,7 @@ public abstract class Events {
     private String location;
     private String description;
     private static final Map<String, List<Events>> AllEventsList = new HashMap<>();
-    private com.Calendar.User.User User;
+    private com.calendar.User.User User;
     private String Type;
 
 
@@ -53,13 +53,6 @@ public abstract class Events {
     }
     public Events() {
     }
-
-
-
-
-
-
-
 
     public void setYear(int year) {
         this.year = year;
