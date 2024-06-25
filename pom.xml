@@ -28,12 +28,14 @@
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>3.3.1</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
             <dependency>
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
                 <version>24.1.0</version>
-                <scope>compile</scope>
             </dependency>
+
+
 
         </dependencies>
 
