@@ -1,8 +1,7 @@
 package com.Calendar.User;
-import com.Calendar.display.Display;
+import com.Calendar.Display.Display;
 
 import java.io.IOException;
-import java.security.interfaces.DSAKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,16 +11,16 @@ public class User {
     private String name;
     private String UserPseudo;
     private List<String> family;
-    private String mdp;
+    private String password;
 
     public int getId() {return id;}
     public String getName() {return name;}
     public List<String> getFamily() {return family;}
     public String getPseudo() {return UserPseudo;}
-    private String getMdp() {return mdp;}
+    public String getPassword() {return password;}
     private User getUser() {return this;}
 
-    private String setPseudo(String pseudo) {return UserPseudo = pseudo;}
+    public String setPassword(String Password) {return Password = password;}
 
     private void printFamily(){
         for (int i = 0; i < family.size(); i++) {
@@ -37,7 +36,7 @@ public class User {
         }else {
             System.out.println("No family");
         }
-        System.out.println("MDP: " + mdp);
+        System.out.println("MDP: " + password);
     }
 
 
@@ -141,25 +140,25 @@ public class User {
         return null; // Si aucun utilisateur n'est trouvé avec ce pseudo
     }
 
-    public User(int id, String name,String UserPseudo,List<String> family, String mdp) {
+    public User(int id, String name,String UserPseudo,List<String> family, String password) {
         this.id = id;
         this.name = name;
         this.UserPseudo = UserPseudo;
         this.family = family;
-        this.mdp = mdp;
+        this.password = password;
     }
 
-    public void changePseudo() {
-        System.out.println("Enter your new pseudo: ");
-        String pseudo = Display.getConsoleInputString();
-        System.out.println("Your pseudo will be" + pseudo + "Are you sure? 1:yes 2:no");
+    public void changePassword() {
+        System.out.println("Enter your new password: ");
+        String Password = Display.getConsoleInputString();
+        System.out.println("Your password will be" + Password + "Are you sure? 1:yes 2:no");
         int choice = Display.getConsoleInputInt(2);
         if (choice == 1) {
-            setPseudo(pseudo);
-            System.out.println("Your pseudo has been changed to " + pseudo);
+            setPassword(Password);
+            System.out.println("Your password has been changed to " + Password);
             Display.receptionDisplay(this);
         } else {
-            changePseudo();
+            changePassword();
         }
     }
 

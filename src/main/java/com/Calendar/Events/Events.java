@@ -1,6 +1,6 @@
-package com.Calendar.events;
+package com.Calendar.Events;
 import com.Calendar.User.User;
-import com.Calendar.display.Display;
+import com.Calendar.Display.Display;
 //import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.Calendar.display.Display.ANSI_RESET;
-import static com.Calendar.display.Display.ANSI_WHITE;
+import static com.Calendar.Display.Display.ANSI_RESET;
+import static com.Calendar.Display.Display.ANSI_WHITE;
 
 
 public abstract class Events {

@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import com.Calendar.DataManadgement.DataManadgement;
-import com.Calendar.display.Display;
-import com.Calendar.events.Events;
+import com.Calendar.Display.Display;
 
-import static com.Calendar.events.Events.addUserEventsListToAllEventsList;
+import static com.Calendar.Events.Events.addUserEventsListToAllEventsList;
 
 public class Main {
     public static void main(String[] args) {

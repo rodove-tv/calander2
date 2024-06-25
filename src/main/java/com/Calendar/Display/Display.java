@@ -1,9 +1,10 @@
-package com.Calendar.display;
-import com.Calendar.events.Birthday;
-import com.Calendar.events.Default;
-import com.Calendar.events.Events;
-import com.Calendar.events.Task;
+package com.Calendar.Display;
+import com.Calendar.Events.Birthday;
+import com.Calendar.Events.Default;
+import com.Calendar.Events.Events;
+import com.Calendar.Events.Task;
 import  com.Calendar.User.User;
+import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.Calendar.events.Events.displayEvent;
+import static com.Calendar.Events.Events.displayEvent;
 
 
 public class Display {
@@ -34,7 +35,7 @@ public class Display {
 
 
     //Display user information
-    public static void displayUser(/*@NotNull*/ User user) {
+    public static void displayUser(@NotNull User user) {
         System.out.println("Name: " + user.getName());
         System.out.println("UserPseudo: " + user.getPseudo());
         System.out.println("family: " + user.getFamily());
@@ -59,7 +60,7 @@ public class Display {
 
 
     // Display the main menu
-    public static void receptionDisplay(/*@NotNull*/ User user) {
+    public static void receptionDisplay(@NotNull User user) {
         //clearConsole();
         System.out.println(ANSI_WHITE+"-----------------------"+ANSI_RESET + ANSI_CYAN + "Calendar App Menu"+ ANSI_RESET + ANSI_WHITE + "-----------------------"+ANSI_RESET);
         System.out.println("Please select an option:");
@@ -103,10 +104,10 @@ public class Display {
                 break;
             case 4:
                 displayUser(user);
-                System.out.println("Want to change your pseudo? 1:yes 2:no");
+                System.out.println("Want to change your password? 1:yes 2:no");
                 int choice = getConsoleInputInt(2);
                 if (choice == 1) {
-                    user.changePseudo();
+                    user.changePassword();
                 }
                 receptionDisplay(user);
                 break;
@@ -123,7 +124,7 @@ public class Display {
 
 
     // Display the current week + events matching days
-    public static void displayCurrentWeek(/*@NotNull*/ User user) {
+    public static void displayCurrentWeek(@NotNull User user) {
         //clearConsole();
         LocalDate today = LocalDate.now();
         List<Events> userEvents = Events.getUserEvents(user);

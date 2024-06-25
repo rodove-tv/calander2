@@ -1,11 +1,11 @@
-package com.Calendar.events;
+package com.Calendar.Events;
 
 import com.Calendar.User.User;
-import com.Calendar.display.Display;
+import com.Calendar.Display.Display;
 //import org.jetbrains.annotations.NotNull;
 
-import static com.Calendar.display.Display.ANSI_RESET;
-import static com.Calendar.display.Display.ANSI_WHITE;
+import static com.Calendar.Display.Display.ANSI_RESET;
+import static com.Calendar.Display.Display.ANSI_WHITE;
 
 public class Task extends Events{
 

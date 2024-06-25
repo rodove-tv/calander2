@@ -1,7 +1,6 @@
-package com.Calendar.events;
+package com.Calendar.Events;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Default extends Events {
 
