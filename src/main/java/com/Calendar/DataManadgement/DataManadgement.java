@@ -1,13 +1,17 @@
 package com.Calendar.DataManadgement;
+import com.Calendar.Database.Database;
+import com.Calendar.Display.Display;
 import com.Calendar.User.User;
 import com.Calendar.Events.Events;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import static com.main.Main.database;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,18 +19,27 @@ public class DataManadgement {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static List<User> readUsersFromFile(String filePath) {
-        List<User> users = new ArrayList<>();
+    public static void readDatabaseFromFile(String filePath) {
         File jsonFile = new File(filePath);
+        ;
+        System.out.println("Reading file: " + filePath);
 
         if (jsonFile.exists()) {
+            System.out.println("File exists: " + filePath);
             try {
-                users = objectMapper.readValue(jsonFile, new TypeReference<List<User>>(){});
+                database = objectMapper.readValue(jsonFile, Database.class);
+                System.out.println("Database initialized successfully: " + database);
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("Failed to deserialize JSON.");
             }
+        } else {
+            System.out.println("File not found: " + filePath);
         }
-        return users;
+        if (database == null) {
+            System.out.println("Failed to initialize database.");
+            System.err.println(3);
+        }
     }
 
     public static void writeUsersToFile(String filePath, List<User> users) {
@@ -36,30 +49,6 @@ public class DataManadgement {
             e.printStackTrace();
         }
     }
-
-
-    public static List<List<Events>> readEventsFromFile(String filePath) {
-        List<List<Events>> events = new ArrayList<>();
-        File jsonFile = new File(filePath);
-
-        if (jsonFile.exists()) {
-            try {
-                events = objectMapper.readValue(jsonFile, new TypeReference<List<List<Events>>>(){});
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return events;
-    }
-    public static void writeEventsToFile(String filePath, List<List<Events>> event) {
-        try {
-            objectMapper.writeValue(new File(filePath), event);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 
 
@@ -79,8 +68,36 @@ public class DataManadgement {
 
    }
 
+   public static User connectionUser(List<User> users) {
+       String pseudo = Display.getConsoleInputString();
+       for (User user : users) {
+           if (Objects.equals(user.getPseudo(), pseudo)) {
+               String password = Display.getConsoleInputString();
+               do {
+                   return user;
+               } while (!(user.getPassword().equals(password)));
+           }
+       }
+       System.out.println("pseudo not found");
+       return connectionUser(users);
+   }
 
 
+    public static void toJson(String json,Object object){
+        try {
+            objectMapper.writeValue(new File(json), object);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    // Convertir JSON en objet Java
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
