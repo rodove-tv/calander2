@@ -19,7 +19,7 @@ public class Default extends Events {
                    String description,
                    int idUser,
                    String type) {
-        super(eventName, eventOwner, year, month, day, hourOfDay, minuteOfDay, date, location, description, idUser, type);
+        super(eventName, eventOwner, year, month, day, hourOfDay, minuteOfDay, date, location, description, idUser,null, type);
     }
     public Default() {
         super();
