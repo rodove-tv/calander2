@@ -1,4 +1,6 @@
 package com.Calendar.Display;
+import com.Calendar.DataManadgement.DataManadgement;
+import com.Calendar.Database.Database;
 import com.Calendar.Events.Birthday;
 import com.Calendar.Events.Default;
 import com.Calendar.Events.Events;
@@ -13,9 +15,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import static com.Calendar.Events.Events.displayEvent;
+import static com.main.Main.database;
 
 
-public class Display {
+public abstract class Display {
 
 
     //Display colors for the console
@@ -43,8 +46,8 @@ public class Display {
 
 
     // Display all users events in array order
-    public static void displayUserEvents(/*@NotNull*/ User user) {
-        List<Events> userEvents = Events.getUserEvents(user);
+    public static void displayUserEvents(/*@NotNull*/ User user,List<Events> userEvents) {
+
 
         if (userEvents != null  && !userEvents.isEmpty()) {
             System.out.println("Events for " + user.getName());
@@ -58,10 +61,56 @@ public class Display {
     }
 
 
+    public static void connectionDisplay() {
+        DataManadgement.toJson("dataBase/database.json", database);
+        DataManadgement.readDatabaseFromFile("dataBase/database.json");
+        List<User> users = List.of();
+        if (database != null) {
+            System.out.println("Displaying data:");
+            System.out.println("Users: " + database.getDataUser());
+            System.out.println("Events: " + database.getDataEnvents());
+        } else {
+            System.out.println("Database is null.");
+        }
+        System.out.println(ANSI_WHITE+"-----------------------"+ANSI_RESET + ANSI_CYAN + "Calendar App Menu"+ ANSI_RESET + ANSI_WHITE + "-----------------------"+ANSI_RESET);
+        System.out.println("Please select an option:");
+        System.out.println("1. créate a new user");
+        System.out.println("2.  connection");
+        System.out.println("3. Exit");
+        System.out.println(ANSI_WHITE+"--------------------------------------------------------------"+ANSI_RESET);
+        int option = getConsoleInputInt(3);
+
+        User user;
+        switch (option) {
+            case 1:
+                user = User.createUser(database.getDataUser());
+                database.addUser(user);
+                receptionDisplay(user);
+                System.out.println("test");
+                break;
+            case 2:
+                user = DataManadgement.connectionUser(users);
+                if (user != null) {
+                    connectionDisplay();
+                    return;
+                }
+                receptionDisplay(user);
+
+                break;
+            case 3:
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid event type");
+                break;
+        }
+    }
+
+
+
 
     // Display the main menu
     public static void receptionDisplay(@NotNull User user) {
-        //clearConsole();
         System.out.println(ANSI_WHITE+"-----------------------"+ANSI_RESET + ANSI_CYAN + "Calendar App Menu"+ ANSI_RESET + ANSI_WHITE + "-----------------------"+ANSI_RESET);
         System.out.println("Please select an option:");
         System.out.println("1. Display all your events");
@@ -74,7 +123,7 @@ public class Display {
         switch  (option) {
             case 1:
                 //clearConsole();
-                displayUserEvents(user);
+                displayUserEvents(user, database.getDataEnvents());
                 break;
             case 2:
                 //clearConsole();
@@ -107,13 +156,15 @@ public class Display {
                 System.out.println("Want to change your password? 1:yes 2:no");
                 int choice = getConsoleInputInt(2);
                 if (choice == 1) {
-                    user.changePassword();
+                    System.out.println("change");
+                    //user.changePassword();
                 }
                 receptionDisplay(user);
                 break;
             case 5:
                 //clearConsole();
                 System.out.println("Goodbye " + user.getName());
+                connectionDisplay();
                 return;
                 //exit (account connection)
             default:
