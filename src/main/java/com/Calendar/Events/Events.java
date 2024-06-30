@@ -1,6 +1,8 @@
 package com.Calendar.Events;
 import com.Calendar.User.User;
 import com.Calendar.Display.Display;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 //import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -31,12 +33,26 @@ public abstract class Events {
     private String location;
     private String description;
     private static final Map<String, List<Events>> AllEventsList = new HashMap<>();
-    private com.Calendar.User.User User;
-    private String Type;
+    private int idUser;
+    private String family;
+    private String type;
 
 
 //constructor
-    public Events(String eventName, String eventOwner, int year, int month, int day, int hourOfDay, int minuteOfDay, LocalDate date, String location, String description, User user, String Type) {
+    @JsonCreator
+    public Events(@JsonProperty("eventName") String eventName,
+                  @JsonProperty("eventOwner") String eventOwner,
+                  @JsonProperty("year")int year,
+                  @JsonProperty("month")int month,
+                  @JsonProperty("day")int day,
+                  @JsonProperty("hourOfDay") int hourOfDay,
+                  @JsonProperty("minuteOfDay")int minuteOfDay,
+                  @JsonProperty("date")LocalDate date,
+                  @JsonProperty("location")String location,
+                  @JsonProperty("description")String description,
+                  @JsonProperty("idUser")int idUser,
+                  @JsonProperty("family")String family,
+                  @JsonProperty("type")String type) {
         this.eventName = eventName;
         this.eventOwner = eventOwner;
         this.year = year;
@@ -47,9 +63,15 @@ public abstract class Events {
         this.date = date;
         this.location = location;
         this.description = description;
+        if (family != null) {
+            this.family = family;
+        }else{
+            this.family = User.getUserPseudoById(idUser);
+        }
+
     }
     public Events(String Type) {
-        this.Type = Type;
+        this.type = Type;
     }
     public Events() {
     }
@@ -82,11 +104,11 @@ public abstract class Events {
     }
 
     public void setDateAndTime() {
-        this.dateandTime = LocalDateTime.of(getYear(), getMonth(), getDay(), getHourOfDay(), getMinuteOfDay());
+        this.dateandTime = LocalDateTime.of(year, month, day, hourOfDay, minuteOfDay);
     }
 
     public void setDate() {
-        this.date = LocalDate.of(getYear(), getMonth(), getDay());
+        this.date = LocalDate.of(year, month, day);
     }
 
     public void setEventName(String eventName) {
@@ -103,7 +125,7 @@ public abstract class Events {
         this.eventOwner = eventOwner;
     }
     public void setType(String Type) {
-        this.Type = Type;
+        this.type = Type;
     }
 
 
@@ -123,7 +145,6 @@ public abstract class Events {
     public int getMinuteOfDay() {
         return minuteOfDay;
     }
-
     public LocalDate getDate() {
         return date;
     }
@@ -133,7 +154,6 @@ public abstract class Events {
     public LocalDate getLocalDate() {
         return localDate;
     }
-
     public String getEventOwner() {
         return eventOwner;
     }
@@ -146,32 +166,26 @@ public abstract class Events {
         }
         return location;
     }
-
     public String getDescription() {
         return description;
     }
-
     public String getType() {
-        return Type;
+        return type;
     }
-
     //Get all events of a user
     public static List<Events> getUserEvents(User user) {
         return AllEventsList.get(user.getName());
     }
-
     //get the user event by name
     public Events getEventByName(String name, List<Events> events) {
         for (Events event : events) {
-            if (Objects.equals(event.getEventName(), name)) {
+            if (Objects.equals(event.eventName, name)) {
                 return event;
             }
         }
         return null;
 
     }
-
-
 
     //add user events list to all events list
     public static void addUserEventsListToAllEventsList(List<Events> eventsList, User user) {
@@ -185,12 +199,8 @@ public abstract class Events {
         }
     }
 
-
-
     //create an event
     public void createEvent(/*@NotNull*/ User user) {
-
-        setType(getType());
         basicEventInfos(user);
         addEventToUserEventsList(this, user);
         Display.receptionDisplay(user);
@@ -213,10 +223,8 @@ public abstract class Events {
 
     }
 
-
     //method to get the type of the event
     public void basicEventInfos(User user)  {
-        String type = getType();
         setEventOwner(user.getName());
         System.out.println(ANSI_WHITE +"<------------------"+ ANSI_RESET +"New Event : " + type + ANSI_WHITE +"------------------>"+ANSI_RESET);
         System.out.println("Enter the name of the "+ type +": ");
@@ -243,14 +251,14 @@ public abstract class Events {
             switch (choice) {
                 case 1:
                     System.out.println("Enter the hour of the event: ");
-                    setHourOfDay(Integer.parseInt(Display.getConsoleInputString()));
+                    hourOfDay = Integer.parseInt(Display.getConsoleInputString());
                     System.out.println("Enter the minute of the event: ");
-                    setMinuteOfDay(Integer.parseInt(Display.getConsoleInputString()));
+                    minuteOfDay = Integer.parseInt(Display.getConsoleInputString());
                     setDateAndTime();
                     break;
                 case 2:
                     System.out.println("Enter the location of the event: ");
-                    setLocation(Display.getConsoleInputString());
+                    location = Display.getConsoleInputString();
                     break;
                 default:
                     System.out.println("Unexpected error occurred");
@@ -259,22 +267,4 @@ public abstract class Events {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
